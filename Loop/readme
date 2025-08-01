@@ -1,0 +1,38 @@
+# Array Functionality Demo
+
+This project lets you interact with a JavaScript array using a simple web interface.
+
+## Features Explained
+
+- **Add Item:**  
+  Enter a fruit name in the input box and click "Add Item" to add it to the array. The new item appears in the list.
+
+- **Delete Last Item:**  
+  Removes the last fruit from the array. If the array is empty, nothing happens.
+
+- **Delete All:**  
+  Clears all items from the array, leaving it empty.
+
+- **Access Item (Index 0):**  
+  Shows the first item in the array (index 0). If the array is empty, it displays a message.
+
+- **Create New Array:**  
+  Resets the array to empty, allowing you to start fresh.
+
+## How to Use
+
+1. Open `index.html` in your browser.
+2. Use the input and buttons to add, remove, or view items in the array.
+3. The output box shows the current state of the array.
+
+## Example Code
+
+```js
+let fruits = ["Apple", "Banana", "Cherry"];
+fruits.push("Mango");      // Add
+fruits.pop();              // Delete last
+fruits[0];                 // Access first
+fruits = [];               // Delete all
+```
+
+---

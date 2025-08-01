@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array Functionality Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+            margin: 0;
+            padding: 40px;
+        }
+        h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        #output {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.08);
+            padding: 24px;
+            max-width: 400px;
+            margin: 32px auto;
+            font-size: 1.1em;
+            color: #34495e;
+        }
+        .controls {
+            max-width: 400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        input, button {
+            padding: 8px;
+            font-size: 1em;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #2980b9;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <h2>Array Functionality Demo</h2>
+    <div class="controls">
+        <input type="text" id="itemInput" placeholder="Enter fruit name">
+        <button onclick="addItem()">Add Item</button>
+        <button onclick="deleteItem()">Delete Last Item</button>
+        <button onclick="deleteAll()">Delete All</button>
+        <button onclick="accessItem()">Access Item (Index 0)</button>
+        <button onclick="createArray()">Create New Array</button>
+    </div>
+    <div id="output"></div>
+    <script>
+        let fruits = ["Apple", "Banana", "Cherry"];
+
+        function render() {
+            let list = "";
+            fruits.forEach(function(fruit, index) {
+                list += (index + 1) + ". " + fruit + "<br>";
+            });
+            document.getElementById("output").innerHTML =
+                "<strong>Fruits:</strong><br>" + (list || "No items in array.");
+        }
+
+        function addItem() {
+            const val = document.getElementById("itemInput").value.trim();
+            if (val) {
+                fruits.push(val);
+                render();
+                document.getElementById("itemInput").value = "";
+            }
+        }
+
+        function deleteItem() {
+            if (fruits.length > 0) {
+                fruits.pop();
+                render();
+            }
+        }
+
+        function deleteAll() {
+            fruits = [];
+            render();
+        }
+
+        function accessItem() {
+            let msg = fruits.length > 0 ? 
+                "First item: <strong>" + fruits[0] + "</strong>" : 
+                "Array is empty.";
+            document.getElementById("output").innerHTML += "<br><br>" + msg;
+        }
+
+        function createArray() {
+            fruits = [];
+            render();
+        }
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>
