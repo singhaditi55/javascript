@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login & Register Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            min-height: 100vh;
+            margin: 0;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        .container {
+            width: 320px;
+            margin: 60px auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            animation: fadeIn 1.2s;
+        }
+        h2 { text-align: center; }
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px;
+        }
+        .error { color: red; font-size: 0.9em; }
+        .success { color: green; font-size: 0.95em; text-align: center; margin-bottom: 10px; }
+        button {
+            width: 100%; padding: 12px; background: #007bff; color: #fff;
+            border: none; border-radius: 4px; cursor: pointer; font-size: 1em;
+            transition: background 0.3s;
+        }
+        button:hover { background: #0056b3; }
+        .switch { text-align: center; margin-top: 12px; }
+        .hidden { display: none; }
+        .input-group {
+            position: relative;
+        }
+        .input-group input {
+            padding-right: 40px;
+        }
+        .input-group span {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: #007bff;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s, font-size 0.3s;
+        }
+        .input-group span:hover {
+            color: #0056b3;
+            font-size: 1.3em;
+        }
+
+        /* Material-style input animation */
+        .input-group input:focus, 
+        input[type="email"]:focus, 
+        input[type="password"]:focus, 
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.15);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        /* Wider input fields */
+        input[type="email"], input[type="password"], input[type="text"] {
+            width: 85%;
+            font-size: 1.1em;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        /* Hint text style */
+        input::placeholder {
+            color: #888;
+            font-style: italic;
+            opacity: 0.8;
+            transition: color 0.3s;
+        }
+
+        /* Responsive for tablets and phones */
+        @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                margin: 30px auto;
+                padding: 12px;
+                border-radius: 8px;
+            }
+            input[type="text"], input[type="password"], input[type="email"] {
+                padding: 8px;
+                font-size: 1em;
+            }
+            button {
+                padding: 10px;
+                font-size: 1em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .input-group span {
+                font-size: 1.3em;
+                right: 8px;
+            }
+        }
+
+        /* Responsive for small laptops */
+        @media (max-width: 900px) {
+            .container {
+                width: 70%;
+                margin: 40px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginForm">
+            <h2>Login</h2>
+            <form id="login">
+                <div class="input-group">
+                    <input type="email" id="loginEmail" placeholder="Email" required>
+                </div>
+                <div class="error" id="loginEmailError"></div>
+                <div class="input-group">
+                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <span id="toggleLoginPassword">👁️</span>
+                </div>
+                <div class="error" id="loginPasswordError"></div>
+                <button type="submit">Login</button>
+                <div class="success" id="loginSuccessMsg"></div>
+            </form>
+            <div class="switch">
+                <a href="#" onclick="showRegister()">Don't have an account? Register</a>
+            </div>
+        </div>
+        <div id="registerForm" class="hidden">
+            <h2>Register</h2>
+            <form id="register">
+                <input type="text" id="regName" placeholder="Name" required>
+                <div class="error" id="regNameError"></div>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <div class="error" id="regEmailError"></div>
+                <div class="input-group">
+                    <input type="password" id="regPassword" placeholder="Password" required>
+                    <span id="toggleRegPassword">👁️</span>
+                </div>
+                <div class="error" id="regPasswordError"></div>
+                <button type="submit">Register</button>
+                <div class="success" id="registerSuccessMsg"></div>
+            </form>
+            <div class="switch">
+                <a href="#" onclick="showLogin()">Already have an account? Login</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('registerSuccessMsg').textContent = '';
+        }
+        function showLogin() {
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('loginSuccessMsg').textContent = '';
+        }
+
+        // Helper: get users from localStorage
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('users') || '[]');
+        }
+        // Helper: save users to localStorage
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // Register validation and save
+        document.getElementById('register').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+
+            document.getElementById('regNameError').textContent = '';
+            document.getElementById('regEmailError').textContent = '';
+            document.getElementById('regPasswordError').textContent = '';
+            document.getElementById('registerSuccessMsg').textContent = '';
+
+            if (name.length < 2) {
+                document.getElementById('regNameError').textContent = 'Name must be at least 2 characters.';
+                valid = false;
+            }
+            if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+                document.getElementById('regEmailError').textContent = 'Enter a valid email.';
+                valid = false;
+            }
+            if (password.length < 6) {
+                document.getElementById('regPasswordError').textContent = 'Password must be at least 6 characters.';
+                valid = false;
+            }
+            // Check if email already exists
+            const users = getUsers();
+            if (users.some(u => u.email === email)) {
+                document.getElementById('regEmailError').textContent = 'Email already registered.';
+                valid = false;
+            }
+            if (valid) {
+                users.push({ name, email, password });
+                saveUsers(users);
+                document.getElementById('registerSuccessMsg').textContent = 'Registration successful! Redirecting to login...';
+                setTimeout(() => {
+                    showLogin();
+                    document.getElementById('loginSuccessMsg').textContent = 'Please login with your registered email and password.';
+                }, 1500);
+                document.getElementById('register').reset();
+            }
+        });
+
+        // Login validation and check
+        document.getElementById('login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let valid = true;
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            document.getElementById('loginEmailError').textContent = '';
+            document.getElementById('loginPasswordError').textContent = '';
+            document.getElementById('loginSuccessMsg').textContent = '';
+
+            // Email validation
+            if (!email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+                document.getElementById('loginEmailError').textContent = 'Enter a valid email.';
+                valid = false;
+            }
+            // Password validation
+            if (password.length < 6) {
+                document.getElementById('loginPasswordError').textContent = 'Password must be at least 6 characters.';
+                valid = false;
+            }
+            if (valid) {
+                const users = getUsers();
+                const user = users.find(u => u.email === email && u.password === password);
+                if (user) {
+                    document.getElementById('loginSuccessMsg').textContent = 'Login successful! Welcome, ' + user.name + '.';
+                    document.getElementById('loginSuccessMsg').style.color = 'green';
+                    document.getElementById('login').reset();
+                    // Optionally, redirect or show another page here
+                } else {
+                    document.getElementById('loginPasswordError').textContent = 'Invalid email or password. Please try again.';
+                }
+            }
+        });
+
+        // Show/hide password for login
+        document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+            const pwd = document.getElementById('loginPassword');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                pwd.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+        // Show/hide password for register
+        document.getElementById('toggleRegPassword').addEventListener('click', function() {
+            const pwd = document.getElementById('regPassword');
+            if (pwd.type === 'password') {
+                pwd.type = 'text';
+                this.textContent = '🙈';
+            } else {
+                pwd.type = 'password';
+                this.textContent = '👁️';
+            }
+        });
+    </script>
+</body>
+</html>
