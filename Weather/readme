@@ -1,0 +1,51 @@
+# 🌤 Weather App (HTML, CSS, JavaScript)
+
+A fully responsive Weather Application using the [OpenWeatherMap API](https://openweathermap.org/) built with **HTML, CSS, and Vanilla JavaScript**.
+
+---
+
+## 📖 Overview
+
+This Weather App allows users to search for any city and get **real-time weather information**. It also maintains a search history using browser local storage and provides extra details such as humidity, wind speed, and sunrise/sunset times.
+
+---
+
+## ✨ Features
+
+- 🔍 **Search any city** and get live weather data.
+- 🌡 **Current temperature, weather description, and icons**.
+- 🌍 Displays **city and country name**.
+- 💨 **Additional details**:
+  - Feels like temperature
+  - Humidity
+  - Pressure
+  - Wind speed
+  - Sunrise and sunset times
+- 🕘 **Date and time** auto-updated.
+- 📜 **Search history** (last 10 searches) stored in local storage.
+- 🧹 Option to **clear history**.
+- 💻 Fully **responsive and clean design**.
+
+---
+
+## 🖼 UI Preview
+
+*(Add your screenshot image here)*  
+
+---
+
+## 🛠 Technologies Used
+
+- **HTML5** – App structure
+- **CSS3** – Modern styling (gradients, shadows, responsive design)
+- **JavaScript (ES6)** – Fetch API, DOM manipulation, and local storage
+- **OpenWeatherMap API** – Weather data provider
+
+---
+
+## 🚀 Installation & Usage
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/your-username/weather-app.git
+cd weather-app
